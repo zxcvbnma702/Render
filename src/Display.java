@@ -6,7 +6,7 @@ import javax.swing.JFrame;
 public class Display extends Canvas{
 
     private final JFrame         m_frame;
-    private final Bitmap         m_frameBuffer;
+    private final RenderContext        m_frameBuffer;
     private final BufferedImage  m_displayImage;
     private final byte[]         m_displayComponents;
     private final BufferStrategy m_bufferStrategy;
@@ -17,11 +17,15 @@ public class Display extends Canvas{
 		Dimension size = new Dimension(width, height);
 		setPreferredSize(size);
 		setMinimumSize(size);
+        setMaximumSize(size);
 
-        m_frameBuffer = new Bitmap(width, height);
+        //创建展示用的位图
+        m_frameBuffer = new RenderContext(width, height);
         m_displayImage = new BufferedImage(width, height, BufferedImage.TYPE_3BYTE_BGR);
         m_displayComponents = ((DataBufferByte)m_displayImage.getRaster().getDataBuffer()).getData();
 
+        m_frameBuffer.Clear((byte)0x80);
+		m_frameBuffer.DrawPixel(100, 100, (byte)0x00, (byte)0x00, (byte)0x00, (byte)0xFF);
 
         m_frame = new JFrame();
         m_frame.add(this);
@@ -42,5 +46,9 @@ public class Display extends Canvas{
         m_frameBuffer.CopyToByteArray(m_displayComponents);
         m_graphics.drawImage(m_displayImage, 0, 0, m_frameBuffer.getWidth(), m_frameBuffer.getHeight(), null);
         m_bufferStrategy.show();
+    }
+
+    public RenderContext GetFrameBuffer(){
+        return m_frameBuffer;
     }
 }

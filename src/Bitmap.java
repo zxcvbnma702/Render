@@ -28,7 +28,7 @@ public class Bitmap{
         m_components[index + 3] = r;
     }
 
-    public void  CopyToByteArray(byte[] dest)
+    public void CopyToByteArray(byte[] dest)
     {
         for(int i = 0; i < m_width * m_height; i++)
         {
