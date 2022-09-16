@@ -1,10 +1,13 @@
 public class App {
     public static void main(String[] args) throws Exception {
-        // System.out.println("Hello, World!");
+
         Display window = new Display(800, 600, "Software Render");
-        Bitmap target = window.GetFrameBuffer();
+        RenderContext target = window.GetFrameBuffer();
         Stars3D stars = new Stars3D(4096, 64.0f, 20.0f);
 
+        Vertex minYVert = new Vertex(100, 100);
+		Vertex midYVert = new Vertex(150, 200);
+		Vertex maxYVert = new Vertex(80, 300);
 
         long previousTime = System.nanoTime();
 
@@ -16,6 +19,9 @@ public class App {
 
             target.Clear((byte)0x00);
             // stars.UpdateAndRender(target, delta);
+
+            target.ScanConvertTriangle(minYVert, midYVert, maxYVert, 0);
+            target.FillShape(100, 300);
 
             window.SwapBuffers();
         }
